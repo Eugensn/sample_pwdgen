@@ -1,0 +1,446 @@
+#:kivy 2.0.0
+#:import Clipboard kivy.core.clipboard.Clipboard
+
+## GENERAL
+# Define your background color Template
+<BackgroundColor@Widget>
+    background_color: 1, 1, 1, 1
+    canvas.before:
+        Color:
+            rgba: root.background_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+
+
+## MAIN
+# main elements
+<ToolButton@Button>
+    size_hint: .2, 1
+    background_color: 50/255, 50/255, 170/255, 1
+    color: 1, 1, 1, 1
+    font_size: '12sp'
+
+
+<GeneralButton@Button>
+    background_color: 50/255, 50/255, 170/255, 1
+    color: 1, 1, 1, 1
+    font_size: '16sp'
+
+
+<MainButton@GeneralButton>
+    size_hint: 1, 0.1
+    font_size: '20sp'
+
+
+<InfoLabel@Label+BackgroundColor>:
+    font_size: '12sp'
+    halign: 'left'
+    valign: 'top'
+    text_size: self.size
+    background_color: 0, 0, 0, 1
+    color: 40/255, 130/255, 0/255, 1
+
+## SETTINGS
+# settings tab
+<SettingsBoxLayoutRow@BoxLayout>
+
+    orientation: 'horizontal'
+    spacing: 5
+    size_hint: 1, .1
+
+
+<SettingsAnchorLayout@AnchorLayout+BackgroundColor>
+    anchor_x: 'center'
+    anchor_y: 'center'
+    background_color: 0, 0, 0, 1
+    size_hint: 0.25, 1
+
+<SettingsCheckBox@CheckBox>
+##    size_hint: .5, .25
+
+
+<SettingsLabel@Label+BackgroundColor>:
+    font_size: '12sp'
+    size_hint: 0.5, 1
+    halign: 'left'
+    valign: 'middle'
+    text_size: self.size
+    color: 1, 1, 1, 1
+    background_color: 0, 0, 0, 1
+
+<SettingsTblHeaderLabel@Label+BackgroundColor>:
+    font_size: '12sp'
+    size_hint: 0.5, 1
+    halign: 'center'
+    valign: 'middle'
+    text_size: self.size
+    color: 1, 1, 1, 1
+    background_color: 0, 0, 0, 1
+
+
+<SettingsHeaderLabel@Label>:
+    font_size: '12sp'
+    halign: 'left'
+    valign: 'bottom'
+    text_size: self.size
+    color: 1, 1, 1, 1
+
+
+<Pwdgen>:
+
+    settings_info: settings_info
+    status_info: status_info
+    keyphrase: keyphrase
+    password: password
+
+    set_phraseraw: set_phraseraw
+    set_phraselow: set_phraselow
+    set_phraseupp: set_phraseupp
+
+    set_use_uppercase: set_use_uppercase
+    set_has_uppercase: set_has_uppercase
+    set_use_lowercase: set_use_lowercase
+    set_has_lowercase: set_has_lowercase
+    set_use_digits: set_use_digits
+    set_has_digits: set_has_digits
+    set_use_special: set_use_special
+    set_has_special: set_has_special
+    set_use_extra: set_use_extra
+    set_has_extra: set_has_extra
+    set_attempts: set_attempts
+
+    set_extra: set_extra
+    set_except: set_except
+    set_pwdlen: set_pwdlen
+    set_secretnum: set_secretnum
+
+    set_Md5Algorithm: set_Md5Algorithm
+    set_CustomAlgorithm: set_CustomAlgorithm
+
+
+    size_hint: 1, 1
+    pos_hint: {'center_x': .5, 'center_y': .5}
+    do_default_tab: False
+
+##'Main'
+    TabbedPanelItem:
+
+        text: 'Generator'
+
+        BoxLayout:
+            orientation: 'vertical'
+            padding: 10, 10, 10, 10
+            spacing: 5
+
+            Label:
+                size_hint: 1, .1
+                text: 'Passw0rd generat0r'
+                color: 1, 1, 1, 1
+                font_size: '25sp'
+                halign: 'center'
+                valign: 'middle'
+                text_size: self.size
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: 1, .1
+
+                Label:
+                    size_hint: .5, 1
+                    text: 'Key phrase:'
+                    color: 1, 1, 1, 1
+                    font_size: '18sp'
+                    halign: 'left'
+                    valign: 'middle'
+                    text_size: self.size
+
+                ToolButton:
+                    text: 'Clr'
+                    on_press: root.toolbuttonclr_on_press()
+
+                ToolButton:
+                    text: 'Copy'
+                    on_release: Clipboard.copy(keyphrase.text)
+
+                ToolButton:
+                    text: 'Pastle'
+                    on_release: keyphrase.text = Clipboard.paste()
+
+            TextInput:
+                id: keyphrase
+                size_hint: 1, .4
+                focus: True
+                multiline: True
+                on_text: root.keyphrase_on_text(self, self.text)
+
+            InfoLabel:
+                id: settings_info
+                text: 'Settings ...'
+                size_hint: 1, .25
+
+            TextInput:
+                id: password
+                size_hint: 1, .15
+                password: True
+                multiline: False
+                hlign: 'center'
+                valign: 'middle'
+                font_size: '25sp'
+
+            InfoLabel:
+                id: status_info
+                background_color: 0, 0, 0, 0
+                text: 'Status:'
+                size_hint: 1, .05
+
+            MainButton:
+                size_hint: 1, .1
+                text: 'GENERATE PASSWORD'
+                on_release: root.generate_on_release()
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: 1, .1
+
+                GeneralButton:
+                    id: showpwd
+                    text: 'Show/hide'
+                    size_hint: 0.5, 1
+                    on_press: root.showpwd_on_press()
+
+                GeneralButton:
+                    text: 'Copy'
+                    size_hint: 0.5, 1
+                    on_release: Clipboard.copy(password.text)
+
+                GeneralButton:
+                    text: 'Exit'
+                    size_hint: 0.5, 1
+                    on_release: root.exit_on_release()
+
+
+##'Settings'
+    TabbedPanelItem:
+        text: 'Settings'
+
+        BoxLayout:
+            orientation: 'vertical'
+            padding: 10, 10, 10, 10
+            spacing: 5
+
+            SettingsHeaderLabel:
+                text: 'Key phrase simbols'
+                size_hint: 1, .1
+
+            SettingsBoxLayoutRow:
+                ToggleButton:
+                    id: set_phraseraw
+                    text: 'Raw'
+                    group: 'keyphrase'
+                    state: 'down'
+                    on_press: root.keyphrase_on_text(root.keyphrase, root.keyphrase.text)
+
+                ToggleButton:
+                    id: set_phraselow
+                    text: 'Lowercase'
+                    group: 'keyphrase'
+                    on_press: root.keyphrase_on_text(root.keyphrase, root.keyphrase.text)
+
+                ToggleButton:
+                    id: set_phraseupp
+                    text: 'Uppercase'
+                    group: 'keyphrase'
+                    on_press: root.keyphrase_on_text(root.keyphrase, root.keyphrase.text)
+
+            SettingsHeaderLabel:
+                text: 'Simbols for password generation.\n"Use" - can be used fo passwod \n"Must have" - must be included in password (rules)'
+                size_hint: 1, .15
+
+##'Table Header'
+            SettingsBoxLayoutRow:
+                SettingsTblHeaderLabel:
+                    text: 'Simbols'
+                SettingsTblHeaderLabel:
+                    text: 'Use'
+                    size_hint: 0.25, 1
+                SettingsTblHeaderLabel:
+                    text: 'Must have'
+                    size_hint: 0.25, 1
+##'Table'
+            SettingsBoxLayoutRow:
+                SettingsLabel:
+                    text: 'Uppercase letters: "A...Z"'
+
+                SettingsAnchorLayout:
+                    SettingsCheckBox:
+                        id: set_use_uppercase
+                        active: True
+                        on_active: root.checkbox_use_click(self, self.active)
+
+                SettingsAnchorLayout:
+                    SettingsCheckBox:
+                        id: set_has_uppercase
+                        active: True
+                        on_active: root.checkbox_has_click(self, self.active)
+
+            SettingsBoxLayoutRow:
+                SettingsLabel:
+                    text: 'Lowercase letters: "a...z"'
+
+                SettingsAnchorLayout:
+                    SettingsCheckBox:
+                        id: set_use_lowercase
+                        active: True
+                        on_active: root.checkbox_use_click(self, self.active)
+
+                SettingsAnchorLayout:
+                    SettingsCheckBox:
+                        id: set_has_lowercase
+                        active: True
+                        on_active: root.checkbox_has_click(self, self.active)
+
+            SettingsBoxLayoutRow:
+                SettingsLabel:
+                    text: 'Digits: "0...9"'
+
+                SettingsAnchorLayout:
+                    SettingsCheckBox:
+                        id: set_use_digits
+                        active: True
+                        on_active: root.checkbox_use_click(self, self.active)
+
+                SettingsAnchorLayout:
+                    SettingsCheckBox:
+                        id: set_has_digits
+                        active: True
+                        on_active: root.checkbox_has_click(self, self.active)
+
+            SettingsBoxLayoutRow:
+                SettingsLabel:
+                    text: 'Special: "#$..."'
+
+                SettingsAnchorLayout:
+                    SettingsCheckBox:
+                        id: set_use_special
+                        active: True
+                        on_active: root.checkbox_use_click(self, self.active)
+
+                SettingsAnchorLayout:
+                    SettingsCheckBox:
+                        id: set_has_special
+                        active: True
+                        on_active: root.checkbox_has_click(self, self.active)
+
+            SettingsBoxLayoutRow:
+                SettingsLabel:
+                    text: 'Extra: user simbols'
+
+                SettingsAnchorLayout:
+                    SettingsCheckBox:
+                        id: set_use_extra
+                        active: False
+                        on_active: root.checkbox_use_click(self, self.active)
+
+                SettingsAnchorLayout:
+                    SettingsCheckBox:
+                        id: set_has_extra
+                        active: False
+                        on_active: root.checkbox_has_click(self, self.active)
+
+            SettingsBoxLayoutRow:
+                SettingsHeaderLabel:
+                    text: 'Extra user simbols:'
+
+            SettingsBoxLayoutRow:
+                TextInput:
+                    id: set_extra
+                    multiline: False
+                    on_text: root.set_extra_on_text(self, self.text)
+
+            SettingsBoxLayoutRow:
+                SettingsHeaderLabel:
+                    text: 'Except simbols:'
+
+            SettingsBoxLayoutRow:
+                TextInput:
+                    id: set_except
+                    multiline: False
+                    on_text: root.set_except_on_text(self, self.text)
+
+            SettingsBoxLayoutRow:
+                SettingsHeaderLabel:
+                    text: 'Password length:'
+
+                TextInput:
+                    id: set_pwdlen
+                    input_filter: 'int'
+                    multiline: False
+                    font_size: '15sp'
+                    text: '10'
+                    on_text: root.set_pwdlen_on_text(self, self.text)
+                    on_focus: root.set_pwdlen_on_focus(self, self.focused)
+                    on_text_validate: root.set_pwdlen_on_enter(self, self.text)
+
+            SettingsBoxLayoutRow:
+                SettingsHeaderLabel:
+                    text: 'Secret number:'
+
+                TextInput:
+                    id: set_secretnum
+                    input_filter: 'int'
+                    multiline: False
+                    font_size: '15sp'
+                    text: '0'
+                    on_text: root.set_secretnum_on_text(self, self.text)
+
+            SettingsBoxLayoutRow:
+                SettingsHeaderLabel:
+                    text: 'Cycles (attempts):'
+
+                TextInput:
+                    id: set_attempts
+                    input_filter: 'int'
+                    multiline: False
+                    font_size: '15sp'
+                    text: '1000'
+                    on_text: root.set_attempts_on_text(self, self.text)
+                    on_focus: root.set_attempts_on_focus(self, self.focused)
+                    on_text_validate: root.set_attempts_on_enter(self, self.text)
+# set_algorithm
+            SettingsBoxLayoutRow:
+                                   
+                SettingsHeaderLabel:
+                    text: 'Password algorithm:'
+
+                BoxLayout:
+                    orientation: 'horizontal'
+                                        
+                    ToggleButton:
+                        id: set_CustomAlgorithm
+                        text: 'Custom'
+                        group: 'algorithm'
+                        state: 'down'
+                        font_size: '10sp'
+                        on_press: root.algorithm_on_press(root.set_Md5Algorithm, root.set_Md5Algorithm.state)
+                    ToggleButton:
+                        id: set_Md5Algorithm
+                        text: 'md5'
+                        group: 'algorithm'                        
+                        font_size: '10sp'                        
+                        on_press: root.algorithm_on_press(root.set_Md5Algorithm, root.set_Md5Algorithm.state)
+
+    TabbedPanelItem:
+        text: 'Help'
+
+        Label:
+            size_hint: 1, .1
+            text: 'Help to do...'
+            color: 1, 1, 1, 1
+            font_size: '25sp'
+            halign: 'center'
+            valign: 'middle'
+            text_size: self.size
+
+
